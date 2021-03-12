@@ -1,10 +1,21 @@
-import React from 'react';
+import React from 'react'
+import Editor from '../pages/Editor'
+import { createGlobalStyle } from 'styled-components'
 
-function App() {
+const GlobalStyle = createGlobalStyle`
+  * {
+    box-sizing: border-box;
+    margin: 0;
+  }
+`
+
+const App = () => {
   return (
-    <div className="App">
-    </div>
-  );
+    <>
+      <GlobalStyle />
+      <Editor />
+    </>
+  )
 }
 
-export default App;
+export default App

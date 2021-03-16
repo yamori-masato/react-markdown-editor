@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactMarkdown from 'react-markdown'
 import { useStateWithStorage } from '../hooks/useStateWithStorage'
 import styled from 'styled-components'
 import Layout from '../components/Layout'
@@ -34,7 +35,9 @@ const Editor = () => {
           value={text}
           placeholder="テキスト入力エリア"
         />
-        <StyledPreview>プレビューエリア</StyledPreview>
+        <StyledPreview>
+          <ReactMarkdown source={text} />
+        </StyledPreview>
       </StyledContainer>
     </Layout>
   )

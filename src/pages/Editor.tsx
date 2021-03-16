@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { useStateWithStorage } from '../hooks/useStateWithStorage'
 import styled from 'styled-components'
 import Layout from '../components/Layout'
 
@@ -20,14 +21,16 @@ const StyledPreview = styled.div`
   border-top: 1px solid silver;
 `
 
+const StorageKey = 'pages/editor:text'
+
 const Editor = () => {
-  const [text, setText] = useState<string>('')
+  const [text, setText] = useStateWithStorage('', StorageKey)
 
   return (
     <Layout>
       <StyledContainer>
         <StyledTextArea
-          onChange={e => setText(e.target.value)}
+          onChange={e => setText(e.target.value) }
           value={text}
           placeholder="テキスト入力エリア"
         />

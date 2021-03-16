@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import Layout from '../components/Layout'
 
@@ -21,10 +21,16 @@ const StyledPreview = styled.div`
 `
 
 const Editor = () => {
+  const [text, setText] = useState<string>('')
+
   return (
     <Layout>
       <StyledContainer>
-        <StyledTextArea value="テキスト入力エリア" />
+        <StyledTextArea
+          onChange={e => setText(e.target.value)}
+          value={text}
+          placeholder="テキスト入力エリア"
+        />
         <StyledPreview>プレビューエリア</StyledPreview>
       </StyledContainer>
     </Layout>

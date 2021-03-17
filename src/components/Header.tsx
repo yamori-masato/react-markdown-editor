@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { FC } from 'react'
+import { Link } from 'react-router-dom'
 import { useGlobalState } from '../hooks/useGlobalState'
 import { actions } from '../reducers'
 import styled from 'styled-components'
@@ -11,20 +12,34 @@ const StyledHeader = styled.header`
   height: 56px;
   width: 100%;
   padding: 0 25px;
-  font-size: 1.5rem;
   position: fixed;
   z-index: 1;
   background-color: white;
   border-bottom: solid 1px gray;
 `
 
-const Header = () => {
+const StyledHeaderTitle = styled.header`
+  font-size: 1.5rem;
+`
+
+const StyledHeaderItems = styled.div`
+  display: flex;
+  align-items: center;
+
+  & > *{
+    margin-left: 0.5rem;
+  }
+`
+
+const Header: FC = ({children}) => {
   const [state, dispatch] = useGlobalState()
 
   return (
     <StyledHeader>
-      <p>Markdown Editor</p>
-      <Button onClick={() => dispatch(actions.openModalAction())}>保存する</Button>
+      <StyledHeaderTitle>Markdown Editor</StyledHeaderTitle>
+      <StyledHeaderItems>
+        {children}
+      </StyledHeaderItems>
     </StyledHeader>
   )
 }

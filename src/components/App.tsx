@@ -1,7 +1,16 @@
 import React from 'react'
-import Editor from '../pages/Editor'
 import { createGlobalStyle } from 'styled-components'
 import { GlobalProvider } from '../contexts'
+import {
+  HashRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom'
+import {
+  Editor,
+  History
+} from '../pages'
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -12,10 +21,18 @@ const GlobalStyle = createGlobalStyle`
 
 const App = () => {
   return (
-    <GlobalProvider>
+    <>
       <GlobalStyle />
-      <Editor />
-    </GlobalProvider>
+      <Router>
+        <GlobalProvider>
+          <Switch>
+            <Route exact path="/editor" component={Editor} />
+            <Route exact path="/history" component={History} />
+            <Redirect path="*" to="/editor" />
+          </Switch>
+        </GlobalProvider>
+      </Router>
+    </>
   )
 }
 

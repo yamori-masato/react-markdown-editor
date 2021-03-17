@@ -1,8 +1,9 @@
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
-import { useStateWithStorage } from '../hooks/useStateWithStorage'
 import styled from 'styled-components'
 import Layout from '../components/Layout'
+import { useGlobalState } from '../hooks/useGlobalState'
+import { actions } from '../reducers'
 
 const StyledContainer = styled.div`
   display: flex;
@@ -22,21 +23,19 @@ const StyledPreview = styled.div`
   border-top: 1px solid silver;
 `
 
-const StorageKey = 'pages/editor:text'
-
 const Editor = () => {
-  const [text, setText] = useStateWithStorage('', StorageKey)
+  const [state, dispatch] = useGlobalState()
 
   return (
     <Layout>
       <StyledContainer>
         <StyledTextArea
-          onChange={e => setText(e.target.value) }
-          value={text}
+          onChange={e => dispatch(actions.setTextAction(e.target.value))}
+          value={state.text}
           placeholder="テキスト入力エリア"
         />
         <StyledPreview>
-          <ReactMarkdown source={text} />
+          <ReactMarkdown source={state.text} />
         </StyledPreview>
       </StyledContainer>
     </Layout>

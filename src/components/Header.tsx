@@ -14,6 +14,8 @@ const StyledHeader = styled.header`
   font-size: 1.5rem;
   position: fixed;
   z-index: 1;
+  background-color: white;
+  border-bottom: solid 1px gray;
 `
 
 const Header = () => {

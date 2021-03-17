@@ -1,6 +1,6 @@
 import React from 'react'
 import { useGlobalState } from '../hooks/useGlobalState'
-import { putMemo } from '../indexeddb/memos'
+import { actions } from '../reducers'
 import styled from 'styled-components'
 import Button from './Button'
 
@@ -18,14 +18,11 @@ const StyledHeader = styled.header`
 
 const Header = () => {
   const [state, dispatch] = useGlobalState()
-  const saveMemo = (): void => {
-    putMemo('TITLE', state.text)
-  }
 
   return (
     <StyledHeader>
       <p>Markdown Editor</p>
-      <Button onClick={saveMemo}>保存する</Button>
+      <Button onClick={() => dispatch(actions.openModalAction())}>保存する</Button>
     </StyledHeader>
   )
 }

@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
+import { putMemo } from '../indexeddb/memos'
 import styled from 'styled-components'
 import Layout from '../components/Layout'
 import SaveModal from '../components/SaveModal'
@@ -41,8 +42,11 @@ const Editor = () => {
       </StyledContainer>
       {state.isModalOpen && (
         <SaveModal
-          onSave={() => {}}
-          onCancel={() => {}}
+          onSave={(title: string): void => {
+            putMemo(title, state.text)
+            dispatch(actions.closeModalAction())
+          }}
+          onCancel={() => {dispatch(actions.closeModalAction())}}
         />
       )}
     </Layout>

@@ -14,10 +14,12 @@ export type ActionType =
 
 export type State = {
   text: string
+  isModalOpen: boolean
 }
 
 export const initialState: State = {
-  text: localStorage.getItem(StorageKey) || ''
+  text: localStorage.getItem(StorageKey) || '',
+  isModalOpen: false
 }
 
 export const reducer = (state: State, action: ActionType): State => {

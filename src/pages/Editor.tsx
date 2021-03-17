@@ -2,6 +2,7 @@ import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import styled from 'styled-components'
 import Layout from '../components/Layout'
+import SaveModal from '../components/SaveModal'
 import { useGlobalState } from '../hooks/useGlobalState'
 import { actions } from '../reducers'
 
@@ -38,6 +39,12 @@ const Editor = () => {
           <ReactMarkdown source={state.text} />
         </StyledPreview>
       </StyledContainer>
+      {state.isModalOpen && (
+        <SaveModal
+          onSave={() => {}}
+          onCancel={() => {}}
+        />
+      )}
     </Layout>
   )
 }

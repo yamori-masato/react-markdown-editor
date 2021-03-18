@@ -6,7 +6,8 @@ import styled from 'styled-components'
 import Header from '../components/Header'
 import Main from '../components/Main'
 import {
-  getMemos,
+  getMemosByPage,
+  getMemoPageCount,
   MemoRecord,
 } from '../indexeddb/memos'
 
@@ -57,13 +58,21 @@ const Memo: FC<MemoProps> = (props) => {
 }
 
 const History = () => {
-  const [state, dispatch] = useGlobalState()
-  const [memos, setMemos] = useState<MemoRecord[]>([])
+  const initialState = {
+    page: 1,
+    memos: [] as MemoRecord[]
+  }
+  const [globalState, dispatch] = useGlobalState()
+  const [state, setState] = useState(initialState)
   const history = useHistory()
+
   useEffect(() => {
-    getMemos()
-      .then(data => {setMemos(data)})
-  }, [])
+    getMemosByPage(state.page)
+      .then(data => {
+        const memos = { memos: data }
+        setState({...state, ...memos})
+      })
+  }, [state.page])
 
   return (
     <>
@@ -72,7 +81,7 @@ const History = () => {
       </Header>
       <Main>
         <StyledContainer>
-          {memos.map(memo => (
+          {state.memos.map(memo => (
             <Memo
               key={memo.datetime}
               title={memo.title}

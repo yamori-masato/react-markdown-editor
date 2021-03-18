@@ -5,6 +5,7 @@ import { Link, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import Header from '../components/Header'
 import Main from '../components/Main'
+import Paging from '../components/Paging'
 import {
   getMemosByPage,
   getMemoPageCount,
@@ -15,6 +16,7 @@ const StyledContainer = styled.div`
   margin: 0 auto;
   margin-top: 2rem;
   width: 90%;
+  overflow: hidden;
 `
 
 const StyledCard = styled.button`
@@ -58,21 +60,32 @@ const Memo: FC<MemoProps> = (props) => {
 }
 
 const History = () => {
-  const initialState = {
-    page: 1,
-    memos: [] as MemoRecord[]
-  }
   const [globalState, dispatch] = useGlobalState()
-  const [state, setState] = useState(initialState)
+  const [maxPage, setMaxPage] = useState<number>(1)
+  const [page, setPage] = useState<number>(1)
+  const [memos, setMemos] = useState<MemoRecord[]>([])
+
   const history = useHistory()
 
   useEffect(() => {
-    getMemosByPage(state.page)
-      .then(data => {
-        const memos = { memos: data }
-        setState({...state, ...memos})
-      })
-  }, [state.page])
+    getMemoPageCount()
+      .then(setMaxPage)
+  }, [])
+
+  useEffect(() => {
+    getMemosByPage(page)
+      .then(setMemos)
+  }, [page])
+
+  const onPrevClick = (page-1 >= 1) 
+    ? () => setPage(page - 1)
+    : undefined
+  
+  const onNextClick = (page+1 <= maxPage) 
+    ? () => setPage(page + 1)
+    : undefined
+  
+  console.log({onPrevClick, onNextClick})
 
   return (
     <>
@@ -81,7 +94,7 @@ const History = () => {
       </Header>
       <Main>
         <StyledContainer>
-          {state.memos.map(memo => (
+          {memos.map(memo => (
             <Memo
               key={memo.datetime}
               title={memo.title}
@@ -92,6 +105,12 @@ const History = () => {
               }}
             />
           ))}
+          <Paging
+            page={page}
+            maxPage={maxPage}
+            onPrevClick={onPrevClick}
+            onNextClick={onNextClick}
+          />
         </StyledContainer>
       </Main>
     </>

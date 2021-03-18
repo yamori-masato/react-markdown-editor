@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { FC, useEffect, useState } from 'react'
+import { useGlobalState } from '../hooks/useGlobalState'
+import { actions } from '../reducers'
+import { Link, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import Header from '../components/Header'
 import Main from '../components/Main'
@@ -39,9 +41,15 @@ const StyledCardText = styled.div`
   overflow: hidden;
 `
 
-const Memo = (props: {title: string, text: string}) => {
+interface MemoProps {
+  title: string
+  text: string
+  onClick: () => void
+}
+
+const Memo: FC<MemoProps> = (props) => {
   return (
-    <StyledCard>
+    <StyledCard onClick={props.onClick}>
       <StyledCardTitle>{props.title}</StyledCardTitle>
       <StyledCardText>{props.text}</StyledCardText>
     </StyledCard>
@@ -49,7 +57,9 @@ const Memo = (props: {title: string, text: string}) => {
 }
 
 const History = () => {
+  const [state, dispatch] = useGlobalState()
   const [memos, setMemos] = useState<MemoRecord[]>([])
+  const history = useHistory()
   useEffect(() => {
     getMemos()
       .then(data => {setMemos(data)})
@@ -67,6 +77,10 @@ const History = () => {
               key={memo.datetime}
               title={memo.title}
               text={memo.text}
+              onClick={() => {
+                dispatch(actions.setTextAction(memo.text))
+                history.push('/editor')
+              }}
             />
           ))}
         </StyledContainer>
